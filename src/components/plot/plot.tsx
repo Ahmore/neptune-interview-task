@@ -8,19 +8,32 @@ export function Plot({ data }: { data: AlignedData }){
         title: "Chart",
             width: 400,
             height: 300,
-            series: [
-            {
-                label: "Date"
+            legend: {
+                show: false,
             },
-            {
-                label: "",
-                points: { show: false },
-                stroke: "blue",
-                // fill: "blue"
-            }
-        ],
+            series: [
+                {},
+                {
+                    label: "",
+                    points: { show: false },
+                    stroke: "darkblue",
+                },
+                {
+                    label: "",
+                    points: { show: false },
+                },
+                {
+                    label: "",
+                    points: { show: false },
+                }
+            ],
+            bands: [
+                {
+                    series: [3, 2],
+                    fill: "rgba(0,0,139,.1)",
+                },
+            ],
             scales: { x: { time: false } },
-        // plugins: [dummyPlugin()]
     };
 
     console.log("PLOT DATA", data);
