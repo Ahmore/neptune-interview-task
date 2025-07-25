@@ -4,6 +4,5 @@ export type Input = {
     N: number,
     S: number,
     P: number,
-    downsampleAt: number,
-    // newConfiguration: boolean,
+    reset: boolean,
 }

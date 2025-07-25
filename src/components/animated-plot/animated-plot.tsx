@@ -12,13 +12,12 @@ export function AnimatedPlot({inputData}: { inputData: InputData }) {
 
     // When a new configuration comes get fresh data
     const onControlsChange = useCallback((N: number, S: number, P: number, reset: boolean) => {
-        console.log("NEW CONFIGURATION", N, S, P, reset);
         const workerInput: Input = {
             data: inputData,
             N,
             S,
             P,
-            downsampleAt: 10 ^ 6, // REFACTOR
+            reset,
         };
 
         worker.current.postMessage(workerInput);
@@ -29,9 +28,8 @@ export function AnimatedPlot({inputData}: { inputData: InputData }) {
         const workerCurrent: Worker = worker.current;
 
         workerCurrent.onmessage = function (e) {
-            console.log("WORKER OUTPUT", e.data);
-
             setSampledData(e.data);
+            console.log(e.data.data);
         }
 
         return () => {

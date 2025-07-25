@@ -1,5 +1,4 @@
-import React from 'react';
-import uPlot, {type AlignedData} from 'uplot';
+import {type AlignedData} from 'uplot';
 import "uplot/dist/uPlot.min.css";
 import UplotReact from 'uplot-react';
 
@@ -36,14 +35,10 @@ export function Plot({ data }: { data: AlignedData }){
             scales: { x: { time: false } },
     };
 
-    console.log("PLOT DATA", data);
-
     return (
         <UplotReact
             options={options}
             data={data}
-            onDelete={(/* chart: uPlot */) => console.log("Deleted")}
-            onCreate={(/* chart: uPlot */) => console.log("Created")}
         />
     );
 }

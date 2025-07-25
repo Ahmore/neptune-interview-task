@@ -1,11 +1,12 @@
 import {type RefObject, useEffect, useRef, useState} from "react";
 import "./controls.css";
+import {CONFIG} from "../../data/config.ts";
 
 export function Controls({dataLength, onChange}: { dataLength: number, onChange: (N: number, S: number, P: number, reset: boolean) => void }) {
-    const [N, setN] = useState(5000);
-    const [S, setS] = useState(0);
-    const [T, setT] = useState(500);
-    const [P, setP] = useState(10);
+    const [N, setN] = useState(CONFIG.INITIAL_N);
+    const [S, setS] = useState(CONFIG.INITIAL_S);
+    const [T, setT] = useState(CONFIG.INITIAL_T);
+    const [P, setP] = useState(CONFIG.INITIAL_P);
     const [started, setStarted] = useState(false);
     const timeoutRef: RefObject<number | undefined> = useRef(undefined);
 
