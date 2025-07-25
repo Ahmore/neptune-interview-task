@@ -17,9 +17,9 @@
 }
 
 .controls button {
-    background-color: green
+    background-color: #90ca44;
 }
 
 .controls button.red {
-    background-color: red
+    background-color: #ee2400;
 }

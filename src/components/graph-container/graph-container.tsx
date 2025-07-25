@@ -1,19 +1,41 @@
-import type {InputData} from "../../model/input.model.ts";
+import type {Input, InputData} from "../../model/input.model.ts";
 import {Controls} from "../controls/controls.tsx";
-import type {Output} from "../../model/output.model.ts";
-import {useCallback, useState} from "react";
+import {type RefObject, useCallback, useEffect, useRef, useState} from "react";
+import workerUrl from "../../worker?worker&url";
 
 export function GraphContainer({inputData}: { inputData: InputData }) {
-    const [data, setData] = useState<Output>({});
-    const [started, setStarted] = useState(false);
+    const worker: RefObject<Worker> = useRef(new Worker(workerUrl, {type: "module"}));
+    // const [data, setData] = useState<Output>({});
 
-    const onControlsChange = (N: number, S: number, P: number, reset: boolean) => {
+
+    // When a new configuration comes get fresh data
+    const onControlsChange = useCallback((N: number, S: number, P: number, reset: boolean) => {
         console.log("NEW CONFIGURATION", N, S, P, reset);
-    }
-    const startStop = () => setStarted(started => !started);
+        const workerInput: Input = {
+            data: inputData,
+            N,
+            S,
+            P,
+            downsampleAt: 10 ^ 6, // REFACTOR
+        };
 
+        worker.current.postMessage(workerInput);
+    }, [inputData]);
+
+    // Cleanup
+    useEffect(() => {
+        const workerCurrent: Worker = worker.current;
+
+        workerCurrent.onmessage = function (e) {
+            console.log("WORKER OUTPUT", e.data);
+        }
+
+        return () => {
+            workerCurrent.terminate();
+        }
+    }, []);
 
     return <>
-        <Controls dataLength={inputData.length} onChange={ useCallback(onControlsChange, []) }></Controls>
+        <Controls dataLength={inputData.length} onChange={onControlsChange}></Controls>
     </>
 }
