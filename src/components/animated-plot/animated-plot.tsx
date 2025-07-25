@@ -6,7 +6,7 @@ import type {Output} from "../../model/output.model.ts";
 import {Aggregates} from "../aggregated/aggregates.tsx";
 import {Plot} from "../plot/plot.tsx";
 
-export function GraphContainer({inputData}: { inputData: InputData }) {
+export function AnimatedPlot({inputData}: { inputData: InputData }) {
     const worker: RefObject<Worker> = useRef(new Worker(workerUrl, {type: "module"}));
     const [sampledData, setSampledData] = useState<Output | undefined>(undefined);
 
