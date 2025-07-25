@@ -29,7 +29,6 @@ export function AnimatedPlot({inputData}: { inputData: InputData }) {
 
         workerCurrent.onmessage = function (e) {
             setSampledData(e.data);
-            console.log(e.data.data);
         }
 
         return () => {

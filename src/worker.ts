@@ -8,7 +8,7 @@ self.onmessage = function (e) {
     const output: Output = getData(input.data, input.N, input.S);
     const t1 = performance.now();
 
-    // console.log("WORKER TIME", t1 - t0);
+    console.log("WORKER TIME", t1 - t0);
 
     self.postMessage(output);
 }
