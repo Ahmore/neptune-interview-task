@@ -2,11 +2,12 @@ import type {Input, InputData} from "../../model/input.model.ts";
 import {Controls} from "../controls/controls.tsx";
 import {type RefObject, useCallback, useEffect, useRef, useState} from "react";
 import workerUrl from "../../worker?worker&url";
+import type {Output} from "../../model/output.model.ts";
+import {Aggregates} from "../aggregated/aggregates.tsx";
 
 export function GraphContainer({inputData}: { inputData: InputData }) {
     const worker: RefObject<Worker> = useRef(new Worker(workerUrl, {type: "module"}));
-    // const [data, setData] = useState<Output>({});
-
+    const [sampledData, setSampledData] = useState<Output | undefined>(undefined);
 
     // When a new configuration comes get fresh data
     const onControlsChange = useCallback((N: number, S: number, P: number, reset: boolean) => {
@@ -28,6 +29,7 @@ export function GraphContainer({inputData}: { inputData: InputData }) {
 
         workerCurrent.onmessage = function (e) {
             console.log("WORKER OUTPUT", e.data);
+            setSampledData(e.data);
         }
 
         return () => {
@@ -37,5 +39,6 @@ export function GraphContainer({inputData}: { inputData: InputData }) {
 
     return <>
         <Controls dataLength={inputData.length} onChange={onControlsChange}></Controls>
+        { sampledData && <Aggregates data={ sampledData.aggregates }></Aggregates> }
     </>
 }

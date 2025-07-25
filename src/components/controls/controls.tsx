@@ -57,7 +57,6 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
             Step
             <input type="number" min="1" value={P} onChange={(e) => {
                 setP(+e.target.value);
-                onChange(N, S, +e.target.value, true);
                 setStarted(false);
             }} />
         </label>
