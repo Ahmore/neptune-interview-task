@@ -15,3 +15,11 @@
 .controls label input {
     width: 100%;
 }
+
+.controls button {
+    background-color: green
+}
+
+.controls button.red {
+    background-color: red
+}
