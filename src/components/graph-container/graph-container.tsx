@@ -4,6 +4,7 @@ import {type RefObject, useCallback, useEffect, useRef, useState} from "react";
 import workerUrl from "../../worker?worker&url";
 import type {Output} from "../../model/output.model.ts";
 import {Aggregates} from "../aggregated/aggregates.tsx";
+import {Plot} from "../plot/plot.tsx";
 
 export function GraphContainer({inputData}: { inputData: InputData }) {
     const worker: RefObject<Worker> = useRef(new Worker(workerUrl, {type: "module"}));
@@ -29,6 +30,7 @@ export function GraphContainer({inputData}: { inputData: InputData }) {
 
         workerCurrent.onmessage = function (e) {
             console.log("WORKER OUTPUT", e.data);
+
             setSampledData(e.data);
         }
 
@@ -38,7 +40,8 @@ export function GraphContainer({inputData}: { inputData: InputData }) {
     }, []);
 
     return <>
-        <Controls dataLength={inputData.length} onChange={onControlsChange}></Controls>
+        <Controls dataLength={inputData[0].length} onChange={onControlsChange}></Controls>
         { sampledData && <Aggregates data={ sampledData.aggregates }></Aggregates> }
+        { sampledData && <Plot data={ sampledData.data }></Plot> }
     </>
 }

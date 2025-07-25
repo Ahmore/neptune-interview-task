@@ -11,12 +11,16 @@ export function Uploader({onLoad}: { onLoad: (data: InputData) => void }) {
 
             reader.addEventListener("load", function (e) {
                 const data: string = e.target?.result as string;
-                const parsedData: InputData = [];
+                const parsedData: InputData = [
+                    [],
+                    []
+                ];
                 const lines = data?.split("\n").filter(d => d !== "");
 
                 for (let i = 0; i < lines.length; i++) {
                     const [x, y]: [number, number] = lines[i].split(",").map(Number) as [number, number];
-                    parsedData.push({ x, y });
+                    parsedData[0].push(x);
+                    parsedData[1].push(y);
                 }
 
                 onLoad(parsedData);

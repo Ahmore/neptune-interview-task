@@ -4,7 +4,7 @@ export type Aggregates = {
     average: number,
     variance: number,
 };
-export type SampledData = { x: number; y: number, min?: number, max?: number }[];
+export type SampledData = [number[], number[], number[], number[]]; // x[], y[], min[], max[]
 export type Output = {
     data: SampledData,
     aggregates: Aggregates,

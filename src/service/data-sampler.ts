@@ -13,16 +13,20 @@ export function getData(data: InputData, N: number, S: number, downsampleAt: num
 }
 
 function getDataRange(data: InputData, N: number, S: number): InputData {
-    return data.slice(S, S + N);
+    return [
+        data[0].slice(S, S + N),
+        data[1].slice(S, S + N)
+    ];
 }
 
 function getAggregates(data: InputData): Aggregates {
     let min: number = Infinity;
     let max: number = -Infinity;
     let sum: number = 0;
+    const ys: number[] = data[1];
 
     for (let i = 0; i < data.length; i++) {
-        const y: number = data[i].y;
+        const y: number = ys[i];
 
         if (y < min) {
             min = y;
@@ -35,16 +39,16 @@ function getAggregates(data: InputData): Aggregates {
         sum += y;
     }
 
-    const average: number = sum / data.length;
+    const average: number = sum / ys.length;
     let varianceSum: number = 0;
 
-    for (let i = 0; i < data.length; i++) {
-        const y: number = data[i].y;
+    for (let i = 0; i < ys.length; i++) {
+        const y: number = ys[i];
         const diff: number = y - average;
         varianceSum += diff * diff;
     }
 
-    const variance = varianceSum / data.length;
+    const variance = varianceSum / ys.length;
 
     return {
         min,

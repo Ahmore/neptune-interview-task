@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>uPlot Shaded Error Band</title>
+    <link href="https://unpkg.com/uplot/dist/uPlot.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        #chart {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>uPlot with Smooth Shaded Error Band</h2>
+<div id="chart"></div>
+
+<script src="https://unpkg.com/uplot/dist/uPlot.iife.min.js"></script>
+<script>
+    const data = [
+        [0, 1, 2, 3, 4],            // x values
+        [5, 6, 4, 7, 5],            // y values
+        [0.5, 1, 0.3, 0.6, 0.4],    // error values
+    ];
+
+    const opts = {
+        title: "Smooth Shaded Error Band",
+        width: 600,
+        height: 400,
+        series: [
+            {}, // x axis
+            {
+                label: "Measurement",
+                stroke: "blue",
+                width: 2,
+                fill: "rgba(0, 0, 255, 0.1)",
+                points: { show: true },
+            },
+        ],
+        axes: [{}, {}],
+        hooks: {
+            draw: [
+                (u) => {
+                    const ctx = u.ctx;
+                    const xVals = u.data[0];
+                    const yVals = u.data[1];
+                    const yErrs = u.data[2];
+
+                    const topPath = [];
+                    const bottomPath = [];
+
+                    for (let i = 0; i < xVals.length; i++) {
+                        const x = u.valToPos(xVals[i], 'x');
+                        const yTop = u.valToPos(yVals[i] + yErrs[i], 'y');
+                        const yBottom = u.valToPos(yVals[i] - yErrs[i], 'y');
+                        topPath.push([x, yTop]);
+                        bottomPath.push([x, yBottom]);
+                    }
+
+                    // Draw filled band
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.fillStyle = "rgba(100, 100, 255, 0.2)";
+
+                    // Top edge
+                    for (let i = 0; i < topPath.length; i++) {
+                        const [x, y] = topPath[i];
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+
+                    // Bottom edge (reversed)
+                    for (let i = bottomPath.length - 1; i >= 0; i--) {
+                        const [x, y] = bottomPath[i];
+                        ctx.lineTo(x, y);
+                    }
+
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.restore();
+                }
+            ]
+        }
+    };
+
+    new uPlot(opts, data, document.getElementById("chart"));
+</script>
+
+</body>
+</html>

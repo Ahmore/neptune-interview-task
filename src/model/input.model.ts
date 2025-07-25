@@ -1,4 +1,4 @@
-export type InputData = { x: number; y: number }[];
+export type InputData = [number[], number[]]; // x[], y[]
 export type Input = {
     data: InputData,
     N: number,
