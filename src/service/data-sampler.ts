@@ -63,7 +63,7 @@ function getSampledData(data: InputData, downsampleAt: number): SampledData {
     return [
         data[0],
         data[1],
-        data[1].map(v => v + 3), // min
-        data[1].map(v => v + 4), // max
+        data[1].map(v => v - 1), // min
+        data[1].map(v => v + 1), // max
     ];
 }

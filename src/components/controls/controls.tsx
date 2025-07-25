@@ -30,6 +30,8 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
                 onChange(N, nextS, P, false);
 
                 setS(nextS);
+            } else {
+                setStarted(false);
             }
         }, T);
     } else if (timeoutRef.current) {
