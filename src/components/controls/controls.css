@@ -1,0 +1,17 @@
+.controls {
+    width: 200px;
+    border: 1px solid black;
+    display: flex;
+    overflow: auto;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.controls label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.controls label input {
+    width: 100%;
+}
