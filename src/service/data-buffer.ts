@@ -51,6 +51,6 @@ export class DataBuffer {
     }
     
     public resetCache() {
-        
+        this._cache.clear();
     }
 }

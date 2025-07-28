@@ -6,8 +6,6 @@ let dataBuffer: DataBuffer;
 self.onmessage = function (e) {
     const message: WorkerInput = e.data;
 
-    console.log("WORKER", e.data.type);
-
     switch (message.type) {
         case "INIT":
             dataBuffer = new DataBuffer(message.data);
@@ -19,16 +17,21 @@ self.onmessage = function (e) {
 
             break;
         case "RENDER":
+            // If config was changed reset cache
             if (message.data.reset) {
                 dataBuffer.resetCache();
             }
 
+            // Removed previous cache values to keep it as small as possible
+            dataBuffer.keepClean(message.data.N, message.data.S, message.data.P);
+
             self.postMessage({
                 type: "RENDER",
                 data: dataBuffer.getData(message.data.N, message.data.S),
-            } as WorkerOutput)
+            } as WorkerOutput);
 
-            dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 2);
+            // Counts values forward to speed up
+            dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 1);
 
             break;
         default:
