@@ -24,7 +24,7 @@ function getAggregates(data: ParsedData): Aggregates {
     let min: number = Infinity;
     let max: number = -Infinity;
     let sum: number = 0;
-    const ys: number[] = data[1];
+    const ys: Float32Array = data[1];
 
     for (let i = 0; i < ys.length; i++) {
         const y: number = ys[i];
@@ -72,7 +72,7 @@ function getSampledData(data: ParsedData): SampledData {
     return downsampleMinMaxMedian(data[1], CONFIG.MAX_POINTS_TO_RENDER)
 }
 
-export function downsampleMinMaxMedian(arr: number[], targetLength: number) {
+export function downsampleMinMaxMedian(arr: Float32Array, targetLength: number) {
     const result: [number[], number[], number[], number[]] = [
         [],
         [],
