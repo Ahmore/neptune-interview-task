@@ -16,6 +16,7 @@ export function Uploader({ worker }: { worker: RefObject<Worker> }) {
 
             Papa.parse(file, {
                 dynamicTyping: true,
+                skipEmptyLines: true,
                 worker: true,
                 chunk: function(results) {
                     setLoadedPercentage(Math.min((results.meta.cursor / fileSize) * 100, 100).toFixed(0));

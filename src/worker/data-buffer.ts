@@ -8,7 +8,6 @@ export class DataBuffer {
     private _cache: Map<string, Results> = new Map();
 
     public upload(data: [number, number][]) {
-
         const chunkX = new Float32Array(data.length);
         const chunkY = new Float32Array(data.length);
 
