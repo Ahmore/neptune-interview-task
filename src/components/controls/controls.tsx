@@ -12,9 +12,6 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
 
     // Cleanup
     useEffect(() => {
-        // Init event
-        onChange(N, S, P, true);
-
         return () => {
             if (intervalRef.current) {
                 clearTimeout(intervalRef.current);
