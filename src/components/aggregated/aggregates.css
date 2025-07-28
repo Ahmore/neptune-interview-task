@@ -1,3 +1,13 @@
 .aggregates {
+    border-collapse: collapse;
+}
+
+.aggregates thead td {
+    font-size: 30px;
+    padding-bottom: 5px;
+}
+
+.aggregates tbody td {
+    padding: 5px;
     border: 1px solid black;
 }

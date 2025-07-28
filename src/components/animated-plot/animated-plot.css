@@ -1,0 +1,16 @@
+.animated-plot {
+    display: flex;
+    flex-direction: column;
+}
+
+.animated-plot .line {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.animated-plot .placeholder {
+    width: 800px;
+    height: 300px;
+}
+

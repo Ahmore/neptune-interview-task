@@ -6,6 +6,8 @@ import {Plot} from "../plot/plot.tsx";
 import {CONFIG} from "../../data/config.ts";
 import type {WorkerInput} from "../../model/worker-api.model.ts";
 
+import "./animated-plot.css";
+
 export function AnimatedPlot({worker, dataLength, sampledData}: {
     worker: RefObject<Worker>,
     dataLength: number,
@@ -29,20 +31,25 @@ export function AnimatedPlot({worker, dataLength, sampledData}: {
     // Handle worker
     useEffect(() => {
         // Init render
-        worker.current.postMessage({
-            type: "RENDER",
-            data: {
-                N: CONFIG.INITIAL_N,
-                S: CONFIG.INITIAL_S,
-                P: CONFIG.INITIAL_P,
-                reset: true,
-            }
-        });
+        // worker.current.postMessage({
+        //     type: "RENDER",
+        //     data: {
+        //         N: CONFIG.INITIAL_N,
+        //         S: CONFIG.INITIAL_S,
+        //         P: CONFIG.INITIAL_P,
+        //         reset: true,
+        //     }
+        // });
     }, [worker]);
 
-    return <>
-        <Controls dataLength={dataLength} onChange={onControlsChange}></Controls>
-        {sampledData && <Aggregates data={sampledData.aggregates}></Aggregates>}
-        {sampledData && <Plot data={sampledData.data}></Plot>}
-    </>
+    return <div className="animated-plot">
+        <div className="line">
+            {!sampledData && <div className="placeholder"></div> }
+            {sampledData && <Plot data={sampledData.data}></Plot>}
+            <Controls dataLength={dataLength} onChange={onControlsChange}></Controls>
+        </div>
+        <div className="line">
+            {sampledData && <Aggregates data={sampledData.aggregates}></Aggregates>}
+        </div>
+    </div>
 }

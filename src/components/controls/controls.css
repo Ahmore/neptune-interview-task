@@ -1,6 +1,5 @@
 .controls {
     width: 200px;
-    border: 1px solid black;
     display: flex;
     overflow: auto;
     flex-direction: column;
@@ -10,16 +9,18 @@
 .controls label {
     font-weight: bold;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .controls label input {
     width: 100%;
+    box-sizing: border-box;
 }
 
 .controls button {
-    background-color: #90ca44;
+    background-color: limegreen;
 }
 
 .controls button.red {
-    background-color: #ee2400;
+    background-color: salmon;
 }
