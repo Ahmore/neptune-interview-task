@@ -1,9 +1,9 @@
-import {type AlignedData} from 'uplot';
+import {type AlignedData, type Options} from 'uplot';
 import "uplot/dist/uPlot.min.css";
 import UplotReact from 'uplot-react';
 
 export function Plot({data}: { data: AlignedData }) {
-    const options = {
+    const options: Options = {
         width: 800,
         height: 300,
         legend: {
@@ -15,10 +15,6 @@ export function Plot({data}: { data: AlignedData }) {
                 label: "",
                 points: {show: false},
                 stroke: "darkblue",
-            },
-            {
-                label: "",
-                points: {show: false},
             },
             {
                 label: "",

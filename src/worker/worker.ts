@@ -46,7 +46,7 @@ self.onmessage = function (e) {
 }
 
 export function assertExhaustive(
-    value: never,
+    _: never,
     message: string = "Reached unexpected case in exhaustive switch"
 ): never {
     throw new Error(message);
