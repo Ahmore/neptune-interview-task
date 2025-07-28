@@ -88,16 +88,12 @@ export function downsampleMinMaxMedian(arr: number[], targetLength: number) {
         const bucket = arr.slice(start, end);
         if (bucket.length === 0) continue;
 
-        const mid = Math.floor(bucket.length / 2);
-        const median = bucket.length % 2 === 0
-            ? (bucket[mid - 1] + bucket[mid]) / 2
-            : bucket[mid];
+        const min = Math.min(...bucket);
+        const max = Math.max(...bucket);
+        const avg = (min + max) / 2;
 
-        const min = bucket[0];
-        const max = bucket[bucket.length - 1];
-
-        result[0].push(start + mid);
-        result[1].push(median);
+        result[0].push(start + Math.floor(bucket.length / 2));
+        result[1].push(avg);
         result[2].push(min);
         result[3].push(max);
     }
