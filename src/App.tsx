@@ -7,7 +7,7 @@ import type {WorkerOutput} from "./model/worker-api.model.ts";
 import type {Results} from "./model/results.model.ts";
 
 function App() {
-    const worker: RefObject<Worker> = useRef(null);
+    const worker: RefObject<Worker | null> = useRef(null);
     const [loadedDataLength, setLoadedDataLength] = useState(0);
     const [sampledData, setSampledData] = useState<Results>();
 
@@ -29,7 +29,7 @@ function App() {
         }
 
         return () => {
-            worker.current.terminate();
+            worker.current?.terminate();
         }
     }, []);
 
