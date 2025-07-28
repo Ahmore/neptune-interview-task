@@ -10,6 +10,8 @@ export class DataBuffer {
         for (let i = 0; i < data.length; i++) {
             this._parsedData[0].push(data[i][0]);
             this._parsedData[1].push(data[i][1]);
+            // this._parsedData[0][i + offset] = data[i][0];
+            // this._parsedData[1][i + offset] = data[i][1];
         }
     }
 
