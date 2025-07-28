@@ -1,14 +1,34 @@
-import type {Input} from "./model/input.model.ts";
-import type {Output} from "./model/output.model.ts";
-import {getData} from "./service/data-sampler.ts";
+import type {WorkerApi} from "./model/worker-api.model.ts";
+import { DataBuffer } from "./service/data-buffer.ts";
+
+let dataBuffer: DataBuffer;
 
 self.onmessage = function (e) {
-    const input: Input = e.data;
-    const t0 = performance.now();
-    const output: Output = getData(input.data, input.N, input.S);
-    const t1 = performance.now();
+    const data: WorkerApi = e.data;
 
-    console.log("WORKER TIME", t1 - t0);
+    switch (data.type) {
+        case "INIT":
+            dataBuffer = new DataBuffer(data.data);
 
-    self.postMessage(output);
+            break;
+        case "RENDER":
+            if (data.reset) {
+                dataBuffer.resetCache();
+            }
+
+            self.postMessage(dataBuffer.getData(data.N, data.S));
+
+            dataBuffer.fillBuffer(data.N, data.S, data.P, 2);
+
+            break;
+        default:
+            return assertExhaustive(data, "Unknown message type");
+    }
+}
+
+export function assertExhaustive(
+    value: never,
+    message: string = "Reached unexpected case in exhaustive switch"
+): never {
+    throw new Error(message);
 }
