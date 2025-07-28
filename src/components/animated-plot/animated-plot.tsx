@@ -31,15 +31,15 @@ export function AnimatedPlot({worker, dataLength, sampledData}: {
     // Handle worker
     useEffect(() => {
         // Init render
-        // worker.current.postMessage({
-        //     type: "RENDER",
-        //     data: {
-        //         N: CONFIG.INITIAL_N,
-        //         S: CONFIG.INITIAL_S,
-        //         P: CONFIG.INITIAL_P,
-        //         reset: true,
-        //     }
-        // });
+        worker.current.postMessage({
+            type: "RENDER",
+            data: {
+                N: CONFIG.INITIAL_N,
+                S: CONFIG.INITIAL_S,
+                P: CONFIG.INITIAL_P,
+                reset: true,
+            }
+        });
     }, [worker]);
 
     return <div className="animated-plot">
