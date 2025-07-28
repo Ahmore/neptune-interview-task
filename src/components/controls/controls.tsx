@@ -54,7 +54,7 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
     return <div className="controls">
         <label>
             Size
-            <input type="number" min="0" max={dataLength} value={N} onChange={(e) => {
+            <input type="number" min="1" max={dataLength} value={N} onChange={(e) => {
                 setN(+e.target.value);
                 onChange(+e.target.value, S, P, true);
                 handleStop();
@@ -70,7 +70,7 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
         </label>
         <label>
             Step
-            <input type="number" min="1" value={P} onChange={(e) => {
+            <input type="number" min="1" max={dataLength} value={P} onChange={(e) => {
                 setP(+e.target.value);
                 handleStop();
             }} />
