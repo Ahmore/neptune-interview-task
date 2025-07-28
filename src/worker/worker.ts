@@ -1,5 +1,5 @@
-import type {WorkerInput, WorkerOutput} from "./model/worker-api.model.ts";
-import { DataBuffer } from "./service/data-buffer.ts";
+import type {WorkerInput, WorkerOutput} from "../model/worker-api.model.ts";
+import { DataBuffer } from "./data-buffer.ts";
 
 let dataBuffer: DataBuffer;
 

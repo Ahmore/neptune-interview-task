@@ -2,7 +2,7 @@ import {type RefObject, useEffect, useRef, useState} from 'react'
 import './App.css'
 import {Uploader} from "./components/uploader/uploader.tsx";
 import {AnimatedPlot} from "./components/animated-plot/animated-plot.tsx";
-import workerUrl from "./worker?worker&url";
+import workerUrl from "./worker/worker.ts?worker&url";
 import type {WorkerOutput} from "./model/worker-api.model.ts";
 import type {Results} from "./model/results.model.ts";
 
