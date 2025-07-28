@@ -2,7 +2,10 @@ import type {Results} from "./results.model.ts";
 
 export type WorkerInput = {
     type: "INIT",
-    data: string,
+    data: {
+        offset: number,
+        data: [number, number][],
+    },
 } | {
     type: "RENDER",
     data: {

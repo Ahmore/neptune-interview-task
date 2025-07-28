@@ -3,27 +3,14 @@ import type {Results} from "../model/results.model.ts";
 import type {ParsedData} from "../model/parsed-data.model.ts";
 
 export class DataBuffer {
-    private _parsedData: ParsedData;
+    private _parsedData: ParsedData = [[], []];
     private _cache: Map<string, Results> = new Map();
 
-    constructor(inputData: string) {
-        const parsedData: ParsedData = [
-            [],
-            []
-        ];
-        const lines = inputData?.split("\n").filter(d => d !== "");
-
-        for (let i = 0; i < lines.length; i++) {
-            const [x, y]: [number, number] = lines[i].split(",").map(Number) as [number, number];
-            parsedData[0].push(x);
-            parsedData[1].push(y);
+    public init(offset: number, data: [number, number][]) {
+        for (let i = 0; i < data.length; i++) {
+            this._parsedData[0].push(data[i][0]);
+            this._parsedData[1].push(data[i][1]);
         }
-        
-        this._parsedData = parsedData;
-    }
-
-    public getParsedDataSize() {
-        return this._parsedData[0].length;
     }
 
     public keepClean(N: number, S: number, P: number) {

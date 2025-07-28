@@ -17,9 +17,6 @@ function App() {
             const workerOutput: WorkerOutput = e.data;
 
             switch(workerOutput.type) {
-                case "INIT":
-                    setLoadedDataLength(workerOutput.data);
-                    break;
                 case "RENDER":
                     setSampledData(workerOutput.data);
                     break;
@@ -33,7 +30,7 @@ function App() {
 
     return <>
         <h1>Neptune interview task</h1>
-        {loadedDataLength === 0 && <Uploader worker={worker} />}
+        {loadedDataLength === 0 && <Uploader worker={worker} onLoad={ (size) => setLoadedDataLength(size) }/>}
         {loadedDataLength > 0 && <AnimatedPlot worker={worker} dataLength={loadedDataLength} sampledData={sampledData}></AnimatedPlot>}
     </>;
 }

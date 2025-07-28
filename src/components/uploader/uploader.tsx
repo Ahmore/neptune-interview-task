@@ -1,27 +1,40 @@
 import {type ChangeEvent, type RefObject, useState} from "react";
-import './baller.css'
+import "./baller.css"
+import Papa from "papaparse";
 
-export function Uploader({ worker }: { worker: RefObject<Worker> }) {
+export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad: (parsedDataSize: number) => void }) {
     const [loading, setLoading] = useState(false);
     const loaderHandler = function (event: ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
 
         if (files && files[0]) {
             const file = files[0];
-            const reader = new FileReader();
 
             setLoading(true);
+            
+            let size = 0;
+            let offset = 0;
 
-            reader.addEventListener("load", function (e) {
-                const data: string = e.target?.result as string;
+            Papa.parse(file, {
+                dynamicTyping: true,
+                worker: true,
+                chunk: function(results) {
+                    size += results.data.length;
 
-                worker.current.postMessage({
-                    type: "INIT",
-                    data: data,
-                });
+                    worker.current.postMessage({
+                        type: "INIT",
+                        data: {
+                            offset: offset,
+                            data: results.data
+                        },
+                    });
+
+                    offset += size;
+                },
+                complete: function() {
+                    onLoad(size);
+                }
             });
-
-            reader.readAsBinaryString(file);
         }
     }
     return <>
@@ -32,6 +45,6 @@ export function Uploader({ worker }: { worker: RefObject<Worker> }) {
             <div className="ball"></div>
             <div className="ball"></div>
         </div> }
-        { !loading && <input type="file" onChange={loaderHandler} /> }
+        { <input type="file" onChange={loaderHandler} /> }
     </>
 }
