@@ -4,6 +4,7 @@ import Papa from "papaparse";
 
 export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad: (parsedDataSize: number) => void }) {
     const [loading, setLoading] = useState(false);
+    const [loadedLines, setLoadedLines] = useState(0);
     const loaderHandler = function (event: ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
 
@@ -20,6 +21,8 @@ export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad
                 worker: true,
                 chunk: function(results) {
                     size += results.data.length;
+
+                    setLoadedLines(size);
 
                     worker.current.postMessage({
                         type: "INIT",
@@ -45,6 +48,7 @@ export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad
             <div className="ball"></div>
             <div className="ball"></div>
         </div> }
-        { <input type="file" onChange={loaderHandler} /> }
+        { loadedLines > 0 && <div>Loaded lines: { loadedLines }</div>}
+        { !loading && <input type="file" onChange={loaderHandler} /> }
     </>
 }
