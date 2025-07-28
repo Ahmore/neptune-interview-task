@@ -55,9 +55,13 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
         <label>
             Size
             <input type="number" min="1" max={dataLength} value={N} onChange={(e) => {
-                setN(+e.target.value);
-                onChange(+e.target.value, S, P, true);
-                handleStop();
+                const value: number = +e.target.value;
+
+                if (value > 0) {
+                    setN(+e.target.value);
+                    onChange(+e.target.value, S, P, true);
+                    handleStop();
+                }
             }} />
         </label>
         <label>
