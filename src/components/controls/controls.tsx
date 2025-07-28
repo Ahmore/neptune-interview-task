@@ -8,7 +8,7 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
     const [T, setT] = useState(CONFIG.INITIAL_T);
     const [P, setP] = useState(CONFIG.INITIAL_P);
     const [started, setStarted] = useState(false);
-    const timeoutRef: RefObject<number | undefined> = useRef(undefined);
+    const intervalRef: RefObject<number | null> = useRef(null);
 
     // Cleanup
     useEffect(() => {
@@ -16,16 +16,21 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
         onChange(N, S, P, true);
 
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
+            if (intervalRef.current) {
+                clearTimeout(intervalRef.current);
             }
         };
     }, []);
 
-    // Animation
-    if (started) {
-        timeoutRef.current = setTimeout(() => {
-            const nextS = S + P;
+    function handleStart() {
+        let i = 1;
+
+        setStarted(true);
+
+        intervalRef.current = setInterval(() => {
+            const nextS = S + i*P;
+
+            i++;
 
             if (nextS < dataLength) {
                 onChange(N, nextS, P, false);
@@ -33,10 +38,20 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
                 setS(nextS);
             } else {
                 setStarted(false);
+
+                if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                }
             }
         }, T);
-    } else if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    }
+
+    function handleStop() {
+        setStarted(false);
+
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
     }
 
     return <div className="controls">
@@ -70,6 +85,12 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
                 setStarted(false)
             }} />
         </label>
-        <button className={ started ? "red" : "" } onClick={ () => setStarted(started => !started) }>{ started ? "STOP" : "START" }</button>
+        <button className={ started ? "red" : "" } onClick={ () => {
+            if (started) {
+                handleStop();
+            } else {
+                handleStart()
+            }
+        } }>{ started ? "STOP" : "START" }</button>
     </div>;
 }
