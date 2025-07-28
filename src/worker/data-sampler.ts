@@ -26,7 +26,7 @@ function getAggregates(data: ParsedData): Aggregates {
     let sum: number = 0;
     const ys: number[] = data[1];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < ys.length; i++) {
         const y: number = ys[i];
 
         if (y < min) {
