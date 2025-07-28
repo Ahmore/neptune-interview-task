@@ -3,26 +3,36 @@ import type {Results} from "../model/results.model.ts";
 import type {ParsedData} from "../model/parsed-data.model.ts";
 
 export class DataBuffer {
-    private _chunks: [number, number][][] = [];
+    private _chunks: [Float32Array, Float32Array][] = [];
     private _parsedData!: ParsedData;
     private _cache: Map<string, Results> = new Map();
 
     public upload(data: [number, number][]) {
-        this._chunks.push(data);
+
+        const chunkX = new Float32Array(data.length);
+        const chunkY = new Float32Array(data.length);
+
+        for (let i = 0; i < data.length; i++) {
+            chunkX[i] = data[i][0];
+            chunkY[i] = data[i][1];
+        }
+
+        this._chunks.push([chunkX, chunkY]);
     }
 
     public init() {
-        const size = this._chunks.reduce((a, b) => a + b.length, 0);
+        const size = this._chunks.reduce((a, b) => a + b[0].length, 0);
         const parsedData: ParsedData = [new Float32Array(size), new Float32Array(size)];
         let offset = 0;
 
-        this._chunks.forEach(chunk => {
-            chunk.forEach(point => {
-                parsedData[0][offset] = point[0];
-                parsedData[1][offset] = point[1];
+        for (let i = 0; i < this._chunks.length; i++) {
+            for (let j = 0; j < this._chunks[i][0].length; j++) {
+                parsedData[0][offset] = this._chunks[i][0][j];
+                parsedData[1][offset] = this._chunks[i][1][j];
+
                 offset++;
-            })
-        })
+            }
+        }
 
         this._parsedData = parsedData;
     }
