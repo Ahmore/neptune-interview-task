@@ -1,6 +1,6 @@
 import {Controls} from "../controls/controls.tsx";
 import {type RefObject, useCallback, useEffect} from "react";
-import type {Output} from "../../model/output.model.ts";
+import type {Results} from "../../model/results.model.ts";
 import {Aggregates} from "../aggregated/aggregates.tsx";
 import {Plot} from "../plot/plot.tsx";
 import {CONFIG} from "../../data/config.ts";
@@ -9,7 +9,7 @@ import type {WorkerInput} from "../../model/worker-api.model.ts";
 export function AnimatedPlot({worker, dataLength, sampledData}: {
     worker: RefObject<Worker>,
     dataLength: number,
-    sampledData: Output
+    sampledData: Results
 }) {
     // When a new configuration comes get fresh data
     const onControlsChange = useCallback((N: number, S: number, P: number, reset: boolean) => {
@@ -28,13 +28,6 @@ export function AnimatedPlot({worker, dataLength, sampledData}: {
 
     // Handle worker
     useEffect(() => {
-        // const workerCurrent: Worker = worker.current;
-
-        // Init worker with current data
-        // worker.current.postMessage({
-        //     init: inputData,
-        // });
-
         // Init render
         worker.current.postMessage({
             type: "RENDER",
@@ -45,17 +38,7 @@ export function AnimatedPlot({worker, dataLength, sampledData}: {
                 reset: true,
             }
         });
-
-        // // Listen to messages
-        // workerCurrent.onmessage = function (e) {
-        //     setSampledData(e.data);
-        // }
-        //
-        // // Cleanup
-        // return () => {
-        //     workerCurrent.terminate();
-        // }
-    }, []);
+    }, [worker]);
 
     return <>
         <Controls dataLength={dataLength} onChange={onControlsChange}></Controls>

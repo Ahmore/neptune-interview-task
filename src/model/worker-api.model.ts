@@ -1,6 +1,5 @@
-import type {Output} from "./output.model.ts";
+import type {Results} from "./results.model.ts";
 
-export type ParsedData = [number[], number[]];
 export type WorkerInput = {
     type: "INIT",
     data: string,
@@ -18,5 +17,5 @@ export type WorkerOutput = {
     data: number,
 } | {
     type: "RENDER",
-    data: Output
+    data: Results
 };

@@ -1,9 +1,9 @@
-import type {InputData} from "../model/input.model.ts";
-import type {Aggregates, Output, SampledData} from "../model/output.model.ts";
+import type {Aggregates, Results, SampledData} from "../model/results.model.ts";
 import {CONFIG} from "../data/config.ts";
+import type {ParsedData} from "../model/parsed-data.model.ts";
 
-export function getData(data: InputData, N: number, S: number): Output {
-    const dataRange: InputData = getDataRange(data, N, S);
+export function getData(data: ParsedData, N: number, S: number): Results {
+    const dataRange: ParsedData = getDataRange(data, N, S);
     const aggregates: Aggregates = getAggregates(dataRange);
     const sampledData: SampledData = getSampledData(dataRange);
 
@@ -13,14 +13,14 @@ export function getData(data: InputData, N: number, S: number): Output {
     }
 }
 
-function getDataRange(data: InputData, N: number, S: number): InputData {
+function getDataRange(data: ParsedData, N: number, S: number): ParsedData {
     return [
         data[0].slice(S, S + N),
         data[1].slice(S, S + N)
     ];
 }
 
-function getAggregates(data: InputData): Aggregates {
+function getAggregates(data: ParsedData): Aggregates {
     let min: number = Infinity;
     let max: number = -Infinity;
     let sum: number = 0;
@@ -59,7 +59,7 @@ function getAggregates(data: InputData): Aggregates {
     };
 }
 
-function getSampledData(data: InputData): SampledData {
+function getSampledData(data: ParsedData): SampledData {
     if (data[1].length <= CONFIG.MAX_POINTS_TO_RENDER) {
         return [
             data[0],

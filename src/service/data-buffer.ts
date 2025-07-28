@@ -1,10 +1,10 @@
-import type {ParsedData} from "../model/worker-api.model.ts";
 import {getData} from "./data-sampler.ts";
-import type {Output} from "../model/output.model.ts";
+import type {Results} from "../model/results.model.ts";
+import type {ParsedData} from "../model/parsed-data.model.ts";
 
 export class DataBuffer {
     private _parsedData: ParsedData;
-    private _cache: Map<string, Output> = new Map();
+    private _cache: Map<string, Results> = new Map();
 
     constructor(inputData: string) {
         const parsedData: ParsedData = [

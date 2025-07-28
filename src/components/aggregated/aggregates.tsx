@@ -1,4 +1,4 @@
-import type {Aggregates} from "../../model/output.model.ts";
+import type {Aggregates} from "../../model/results.model.ts";
 import "./aggregates.css";
 
 export function Aggregates({data}: { data: Aggregates }) {
