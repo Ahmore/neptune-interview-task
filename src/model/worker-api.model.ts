@@ -1,11 +1,14 @@
 import type {Results} from "./results.model.ts";
 
 export type WorkerInput = {
-    type: "INIT",
+    type: "UPLOAD",
     data: {
         offset: number,
         data: [number, number][],
     },
+} | {
+    type: "INIT",
+    data: number,
 } | {
     type: "RENDER",
     data: {

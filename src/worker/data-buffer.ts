@@ -3,16 +3,28 @@ import type {Results} from "../model/results.model.ts";
 import type {ParsedData} from "../model/parsed-data.model.ts";
 
 export class DataBuffer {
-    private _parsedData: ParsedData = [[], []];
+    private _chunks: [number, number][][] = [];
+    private _parsedData!: ParsedData;
     private _cache: Map<string, Results> = new Map();
 
-    public init(offset: number, data: [number, number][]) {
-        for (let i = 0; i < data.length; i++) {
-            this._parsedData[0].push(data[i][0]);
-            this._parsedData[1].push(data[i][1]);
-            // this._parsedData[0][i + offset] = data[i][0];
-            // this._parsedData[1][i + offset] = data[i][1];
-        }
+    public upload(data: [number, number][]) {
+        this._chunks.push(data);
+    }
+
+    public init() {
+        const size = this._chunks.reduce((a, b) => a + b.length, 0);
+        const parsedData: ParsedData = [new Float32Array(size), new Float32Array(size)];
+        let offset = 0;
+
+        this._chunks.forEach(chunk => {
+            chunk.forEach(point => {
+                parsedData[0][offset] = point[0];
+                parsedData[1][offset] = point[1];
+                offset++;
+            })
+        })
+
+        this._parsedData = parsedData;
     }
 
     public keepClean(N: number, S: number, P: number) {
@@ -43,5 +55,9 @@ export class DataBuffer {
     
     public resetCache() {
         this._cache.clear();
+    }
+
+    public getSize(): number {
+        return this._parsedData[0].length;
     }
 }

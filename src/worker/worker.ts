@@ -8,8 +8,18 @@ self.onmessage = function (e) {
     let t0, t1;
 
     switch (message.type) {
+        case "UPLOAD":
+            dataBuffer.upload(message.data.data);
+
+            break;
+
         case "INIT":
-            dataBuffer.init(message.data.offset, message.data.data);
+            dataBuffer.init();
+
+            self.postMessage({
+                type: "INIT",
+                data: dataBuffer.getSize(),
+            })
 
             break;
 
@@ -22,13 +32,13 @@ self.onmessage = function (e) {
             // Removed previous cache values to keep it as small as possible
             dataBuffer.keepClean(message.data.N, message.data.S, message.data.P);
 
-            t0 = performance.now();
+            // t0 = performance.now();
             self.postMessage({
                 type: "RENDER",
                 data: dataBuffer.getData(message.data.N, message.data.S),
             } as WorkerOutput);
-            t1 = performance.now();
-            console.log("Time: " + (t1 - t0) + "ms");
+            // t1 = performance.now();
+            // console.log("Time: " + (t1 - t0) + "ms");
 
             // Counts values forward to speed up
             dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 5);

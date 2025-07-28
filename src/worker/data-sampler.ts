@@ -15,8 +15,8 @@ export function getData(data: ParsedData, N: number, S: number): Results {
 
 function getDataRange(data: ParsedData, N: number, S: number): ParsedData {
     return [
-        data[0].slice(S, S + N),
-        data[1].slice(S, S + N)
+        data[0].subarray(S, S + N),
+        data[1].subarray(S, S + N)
     ];
 }
 
@@ -85,11 +85,24 @@ export function downsampleMinMaxMedian(arr: number[], targetLength: number) {
         const start = Math.floor(i * bucketSize);
         const end = Math.min(Math.floor((i + 1) * bucketSize), arr.length);
 
-        const bucket = arr.slice(start, end);
+        const bucket = arr.subarray(start, end);
         if (bucket.length === 0) continue;
 
-        const min = Math.min(...bucket);
-        const max = Math.max(...bucket);
+        let min: number = Infinity;
+        let max: number = -Infinity;
+
+        for (let j = 0; j < bucket.length; j++) {
+            const y: number = bucket[j];
+
+            if (y < min) {
+                min = y;
+            }
+
+            if (y > max) {
+                max = y;
+            }
+        }
+
         const avg = (min + max) / 2;
 
         result[0].push(start + Math.floor(bucket.length / 2));

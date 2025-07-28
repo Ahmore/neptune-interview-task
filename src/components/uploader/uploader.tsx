@@ -2,40 +2,35 @@ import {type ChangeEvent, type RefObject, useState} from "react";
 import "./baller.css"
 import Papa from "papaparse";
 
-export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad: (parsedDataSize: number) => void }) {
+export function Uploader({ worker }: { worker: RefObject<Worker> }) {
     const [loading, setLoading] = useState(false);
-    const [loadedLines, setLoadedLines] = useState(0);
+    const [loadedPercentage, setLoadedPercentage] = useState("");
     const loaderHandler = function (event: ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
 
         if (files && files[0]) {
             const file = files[0];
+            const fileSize = file.size;
 
             setLoading(true);
-            
-            let size = 0;
-            let offset = 0;
 
             Papa.parse(file, {
                 dynamicTyping: true,
                 worker: true,
                 chunk: function(results) {
-                    size += results.data.length;
-
-                    setLoadedLines(size);
+                    setLoadedPercentage(Math.min((results.meta.cursor / fileSize) * 100, 100).toFixed(0));
 
                     worker.current.postMessage({
-                        type: "INIT",
+                        type: "UPLOAD",
                         data: {
-                            offset: offset,
                             data: results.data
                         },
                     });
-
-                    offset += size;
                 },
                 complete: function() {
-                    onLoad(size);
+                    worker.current.postMessage({
+                        type: "INIT"
+                    });
                 }
             });
         }
@@ -48,7 +43,7 @@ export function Uploader({ worker, onLoad }: { worker: RefObject<Worker>, onLoad
             <div className="ball"></div>
             <div className="ball"></div>
         </div> }
-        { loadedLines > 0 && <div>Loaded lines: { loadedLines }</div>}
+        { loadedPercentage !== "" && <div>{ loadedPercentage }%</div>}
         { !loading && <input type="file" onChange={loaderHandler} /> }
     </>
 }

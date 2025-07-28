@@ -1,1 +1,1 @@
-export type ParsedData = [number[], number[]];
+export type ParsedData = [Float32Array, Float32Array];
