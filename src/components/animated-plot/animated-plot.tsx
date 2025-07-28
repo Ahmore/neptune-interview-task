@@ -9,7 +9,7 @@ import type {WorkerInput} from "../../model/worker-api.model.ts";
 export function AnimatedPlot({worker, dataLength, sampledData}: {
     worker: RefObject<Worker>,
     dataLength: number,
-    sampledData: Results
+    sampledData: Results | undefined
 }) {
     // When a new configuration comes get fresh data
     const onControlsChange = useCallback((N: number, S: number, P: number, reset: boolean) => {
