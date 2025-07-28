@@ -32,8 +32,9 @@ function App() {
     }, []);
 
     return <>
-        { loadedDataLength === 0 && <Uploader worker={ worker } />}
-        { loadedDataLength > 0 && <AnimatedPlot worker={ worker } dataLength={loadedDataLength} sampledData={sampledData}></AnimatedPlot>}
+        <h1>Neptune interview task</h1>
+        {loadedDataLength === 0 && <Uploader worker={worker} />}
+        {loadedDataLength > 0 && <AnimatedPlot worker={worker} dataLength={loadedDataLength} sampledData={sampledData}></AnimatedPlot>}
     </>;
 }
 
