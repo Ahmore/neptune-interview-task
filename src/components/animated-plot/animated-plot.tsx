@@ -49,6 +49,7 @@ export function AnimatedPlot({worker, dataLength, sampledData}: {
             <Controls dataLength={dataLength} onChange={onControlsChange}></Controls>
         </div>
         <div className="line">
+            {!sampledData && <div className="placeholder2"></div> }
             {sampledData && <Aggregates data={sampledData.aggregates}></Aggregates>}
         </div>
     </div>
