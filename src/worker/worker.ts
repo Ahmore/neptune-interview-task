@@ -31,7 +31,7 @@ self.onmessage = function (e) {
             } as WorkerOutput);
 
             // Counts values forward to speed up
-            dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 1);
+            dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 5);
 
             break;
         default:

@@ -57,7 +57,7 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
             <input type="number" min="0" max={dataLength} value={N} onChange={(e) => {
                 setN(+e.target.value);
                 onChange(+e.target.value, S, P, true);
-                setStarted(false);
+                handleStop();
             }} />
         </label>
         <label>
@@ -65,21 +65,21 @@ export function Controls({dataLength, onChange}: { dataLength: number, onChange:
             <input type="number" min="0" max={dataLength} value={S} onChange={(e) => {
                 setS(+e.target.value);
                 onChange(N, +e.target.value, P, true);
-                setStarted(false);
+                handleStop();
             }} />
         </label>
         <label>
             Step
             <input type="number" min="1" value={P} onChange={(e) => {
                 setP(+e.target.value);
-                setStarted(false);
+                handleStop();
             }} />
         </label>
         <label>
-            Time delta
+            Time delta [ms]
             <input type="number" min="16" value={T} onChange={(e) => {
                 setT(+e.target.value);
-                setStarted(false)
+                handleStop();
             }} />
         </label>
         <button className={ started ? "red" : "" } onClick={ () => {
