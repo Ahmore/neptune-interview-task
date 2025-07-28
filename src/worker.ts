@@ -1,28 +1,38 @@
-import type {WorkerApi} from "./model/worker-api.model.ts";
+import type {WorkerInput, WorkerOutput} from "./model/worker-api.model.ts";
 import { DataBuffer } from "./service/data-buffer.ts";
 
 let dataBuffer: DataBuffer;
 
 self.onmessage = function (e) {
-    const data: WorkerApi = e.data;
+    const message: WorkerInput = e.data;
 
-    switch (data.type) {
+    console.log("WORKER", e.data.type);
+
+    switch (message.type) {
         case "INIT":
-            dataBuffer = new DataBuffer(data.data);
+            dataBuffer = new DataBuffer(message.data);
+
+            self.postMessage({
+                type: "INIT",
+                data: dataBuffer.getParsedDataSize(),
+            } as WorkerOutput)
 
             break;
         case "RENDER":
-            if (data.reset) {
+            if (message.data.reset) {
                 dataBuffer.resetCache();
             }
 
-            self.postMessage(dataBuffer.getData(data.N, data.S));
+            self.postMessage({
+                type: "RENDER",
+                data: dataBuffer.getData(message.data.N, message.data.S),
+            } as WorkerOutput)
 
-            dataBuffer.fillBuffer(data.N, data.S, data.P, 2);
+            dataBuffer.fillBuffer(message.data.N, message.data.S, message.data.P, 2);
 
             break;
         default:
-            return assertExhaustive(data, "Unknown message type");
+            return assertExhaustive(message, "Unknown message type");
     }
 }
 

@@ -22,6 +22,10 @@ export class DataBuffer {
         this._parsedData = parsedData;
     }
 
+    public getParsedDataSize() {
+        return this._parsedData[0].length;
+    }
+
     public keepClean(N: number, S: number, P: number) {
         if (this._cache.has(`${N}-${S - P}`)) {
             this._cache.delete(`${N}-${S - P}`);

@@ -1,19 +1,39 @@
-import {useState} from 'react'
+import {type RefObject, useEffect, useRef, useState} from 'react'
 import './App.css'
-import type {InputData} from "./model/input.model.ts";
 import {Uploader} from "./components/uploader/uploader.tsx";
 import {AnimatedPlot} from "./components/animated-plot/animated-plot.tsx";
+import workerUrl from "./worker?worker&url";
+import type {WorkerOutput} from "./model/worker-api.model.ts";
+import type {Output} from "./model/output.model.ts";
 
 function App() {
-    const [inputData, setInputData] = useState<InputData>([]);
+    const worker: RefObject<Worker> = useRef(new Worker(workerUrl, {type: "module"}));
+    const [loadedDataLength, setLoadedDataLength] = useState(0);
+    const [sampledData, setSampledData] = useState<Output>();
 
-    const onLoad = (data: InputData) => {
-        setInputData(data);
-    }
+    // Cleanup
+    useEffect(() => {
+        worker.current.onmessage = function (e) {
+            const workerOutput: WorkerOutput = e.data;
+
+            switch(workerOutput.type) {
+                case "INIT":
+                    setLoadedDataLength(workerOutput.data);
+                    break;
+                case "RENDER":
+                    setSampledData(workerOutput.data);
+                    break;
+            }
+        }
+
+        return () => {
+            worker.current.terminate();
+        }
+    }, []);
 
     return <>
-        {inputData.length === 0 && <Uploader onLoad={onLoad}/>}
-        {inputData.length > 0 && <AnimatedPlot inputData={inputData}></AnimatedPlot>}
+        { loadedDataLength === 0 && <Uploader worker={ worker } />}
+        { loadedDataLength > 0 && <AnimatedPlot worker={ worker } dataLength={loadedDataLength} sampledData={sampledData}></AnimatedPlot>}
     </>;
 }
 

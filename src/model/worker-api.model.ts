@@ -1,12 +1,22 @@
-export type InputData = [number[], number[]]; // x[], y[]
+import type {Output} from "./output.model.ts";
+
 export type ParsedData = [number[], number[]];
-export type WorkerApi = {
+export type WorkerInput = {
     type: "INIT",
     data: string,
 } | {
     type: "RENDER",
-    N: number,
-    S: number,
-    P: number,
-    reset: boolean,
+    data: {
+        N: number,
+        S: number,
+        P: number,
+        reset: boolean,
+    }
+};
+export type WorkerOutput = {
+    type: "INIT",
+    data: number,
+} | {
+    type: "RENDER",
+    data: Output
 };
