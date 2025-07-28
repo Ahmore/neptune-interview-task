@@ -62,8 +62,8 @@ function getAggregates(data: ParsedData): Aggregates {
 function getSampledData(data: ParsedData): SampledData {
     if (data[1].length <= CONFIG.MAX_POINTS_TO_RENDER) {
         return [
-            data[0],
-            data[1],
+            Array.from(data[0]),
+            Array.from(data[1]),
             [],
             []
         ];
