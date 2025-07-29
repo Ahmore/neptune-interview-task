@@ -36,9 +36,13 @@ function App() {
     return (
         <>
             <h1>Neptune interview task</h1>
-            {loadedDataLength === 0 && <Uploader worker={worker} />}
-            {loadedDataLength > 0 && (
+            {loadedDataLength === 0 && <Uploader
+                // @ts-ignore
+                worker={worker}
+            />}
+            {loadedDataLength > 0 && worker !== null  && (
                 <AnimatedPlot
+                    // @ts-ignore
                     worker={worker}
                     dataLength={loadedDataLength}
                     sampledData={sampledData}

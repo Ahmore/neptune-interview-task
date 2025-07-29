@@ -14,13 +14,13 @@ export function Controls({
     const [T, setT] = useState(CONFIG.INITIAL_T);
     const [P, setP] = useState(CONFIG.INITIAL_P);
     const [started, setStarted] = useState(false);
-    const intervalRef: RefObject<number | null> = useRef(null);
+    const intervalRef: RefObject<NodeJS.Timeout | null> = useRef(null);
 
     // Cleanup
     useEffect(() => {
         return () => {
             if (intervalRef.current) {
-                clearTimeout(intervalRef.current);
+                clearInterval(intervalRef.current);
             }
         };
     }, []);
