@@ -1,8 +1,8 @@
-import {type AlignedData, type Options} from 'uplot';
+import { type AlignedData, type Options } from "uplot";
 import "uplot/dist/uPlot.min.css";
-import UplotReact from 'uplot-react';
+import UplotReact from "uplot-react";
 
-export function Plot({data}: { data: AlignedData }) {
+export function Plot({ data }: { data: AlignedData }) {
     const options: Options = {
         width: 800,
         height: 300,
@@ -13,13 +13,13 @@ export function Plot({data}: { data: AlignedData }) {
             {},
             {
                 label: "",
-                points: {show: false},
+                points: { show: false },
                 stroke: "darkblue",
             },
             {
                 label: "",
-                points: {show: false},
-            }
+                points: { show: false },
+            },
         ],
         bands: [
             {
@@ -27,13 +27,8 @@ export function Plot({data}: { data: AlignedData }) {
                 fill: "rgba(0,0,139,.1)",
             },
         ],
-        scales: {x: {time: false}},
+        scales: { x: { time: false } },
     };
 
-    return (
-        <UplotReact
-            options={options}
-            data={data}
-        />
-    );
+    return <UplotReact options={options} data={data} />;
 }

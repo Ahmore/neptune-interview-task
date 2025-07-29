@@ -1,6 +1,10 @@
-import type {Aggregates, Results, SampledData} from "../model/results.model.ts";
-import {CONFIG} from "../data/config.ts";
-import type {ParsedData} from "../model/parsed-data.model.ts";
+import type {
+    Aggregates,
+    Results,
+    SampledData,
+} from "../model/results.model.ts";
+import { CONFIG } from "../data/config.ts";
+import type { ParsedData } from "../model/parsed-data.model.ts";
 
 export function getData(data: ParsedData, N: number, S: number): Results {
     const dataRange: ParsedData = getDataRange(data, N, S);
@@ -10,14 +14,11 @@ export function getData(data: ParsedData, N: number, S: number): Results {
     return {
         data: sampledData,
         aggregates: aggregates,
-    }
+    };
 }
 
 function getDataRange(data: ParsedData, N: number, S: number): ParsedData {
-    return [
-        data[0].subarray(S, S + N),
-        data[1].subarray(S, S + N)
-    ];
+    return [data[0].subarray(S, S + N), data[1].subarray(S, S + N)];
 }
 
 function getAggregates(data: ParsedData): Aggregates {
@@ -55,30 +56,23 @@ function getAggregates(data: ParsedData): Aggregates {
         min,
         max,
         average,
-        variance
+        variance,
     };
 }
 
 function getSampledData(data: ParsedData): SampledData {
     if (data[1].length <= CONFIG.MAX_POINTS_TO_RENDER) {
-        return [
-            Array.from(data[0]),
-            Array.from(data[1]),
-            [],
-            []
-        ];
+        return [Array.from(data[0]), Array.from(data[1]), [], []];
     }
 
-    return downsampleMinMaxMedian(data[1], CONFIG.MAX_POINTS_TO_RENDER)
+    return downsampleMinMaxMedian(data[1], CONFIG.MAX_POINTS_TO_RENDER);
 }
 
-export function downsampleMinMaxMedian(arr: Float32Array, targetLength: number) {
-    const result: [number[], number[], number[], number[]] = [
-        [],
-        [],
-        [],
-        []
-    ];
+export function downsampleMinMaxMedian(
+    arr: Float32Array,
+    targetLength: number,
+) {
+    const result: [number[], number[], number[], number[]] = [[], [], [], []];
     const bucketSize = arr.length / targetLength;
 
     for (let i = 0; i < targetLength; i++) {

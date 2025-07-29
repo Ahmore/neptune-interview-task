@@ -1,5 +1,5 @@
-import {type ChangeEvent, type RefObject, useState} from "react";
-import "./baller.css"
+import { type ChangeEvent, type RefObject, useState } from "react";
+import "./baller.css";
 import Papa from "papaparse";
 
 export function Uploader({ worker }: { worker: RefObject<Worker> }) {
@@ -18,33 +18,42 @@ export function Uploader({ worker }: { worker: RefObject<Worker> }) {
                 dynamicTyping: true,
                 skipEmptyLines: true,
                 worker: true,
-                chunk: function(results) {
-                    setLoadedPercentage(Math.min((results.meta.cursor / fileSize) * 100, 100).toFixed(0));
+                chunk: function (results) {
+                    setLoadedPercentage(
+                        Math.min(
+                            (results.meta.cursor / fileSize) * 100,
+                            100,
+                        ).toFixed(0),
+                    );
 
                     worker.current.postMessage({
                         type: "UPLOAD",
                         data: {
-                            data: results.data
+                            data: results.data,
                         },
                     });
                 },
-                complete: function() {
+                complete: function () {
                     worker.current.postMessage({
-                        type: "INIT"
+                        type: "INIT",
                     });
-                }
+                },
             });
         }
-    }
-    return <>
-        { loading && <div className="baller">
-            <div className="ball"></div>
-            <div className="ball"></div>
-            <div className="ball"></div>
-            <div className="ball"></div>
-            <div className="ball"></div>
-        </div> }
-        { loadedPercentage !== "" && <div>{ loadedPercentage }%</div>}
-        { !loading && <input type="file" onChange={loaderHandler} /> }
-    </>
+    };
+    return (
+        <>
+            {loading && (
+                <div className="baller">
+                    <div className="ball"></div>
+                    <div className="ball"></div>
+                    <div className="ball"></div>
+                    <div className="ball"></div>
+                    <div className="ball"></div>
+                </div>
+            )}
+            {loadedPercentage !== "" && <div>{loadedPercentage}%</div>}
+            {!loading && <input type="file" onChange={loaderHandler} />}
+        </>
+    );
 }
